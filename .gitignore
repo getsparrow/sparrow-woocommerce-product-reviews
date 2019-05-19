@@ -17,3 +17,8 @@ wp-content/plugins/hello.php
 /sitemap.xml
 /sitemap.xml.gz
 
+.DS_Store
+vendor/
+node_modules/
+.env
+.vscode/

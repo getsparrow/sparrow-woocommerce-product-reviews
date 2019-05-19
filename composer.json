@@ -1,0 +1,14 @@
+{
+    "name": "getsaprrow/plugins-woocommerce-product-reviews",
+    "description": "Woocommerce Product Reviews",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "neerajsohal",
+            "email": "hello@neerajkumar.name"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
