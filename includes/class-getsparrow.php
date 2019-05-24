@@ -67,8 +67,8 @@ class Getsparrow {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
+		if ( defined( 'COM_GETSPARROW_VERSION' ) ) {
+			$this->version = COM_GETSPARROW_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -78,7 +78,6 @@ class Getsparrow {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
