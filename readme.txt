@@ -60,7 +60,7 @@ Though, you can choose to hide a review; Deletion of reviews is not possible sin
 
 = What Woocommerce version do you support? =
 
-Judge.me supports WooCommerce version 3.2.x and up.
+Sparrow supports WooCommerce version 3.2.x and up.
 
 
 == Screenshots ==
