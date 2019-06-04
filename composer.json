@@ -2,7 +2,7 @@
     "name": "getsaprrow/plugins-woocommerce-product-reviews",
     "description": "Woocommerce Product Reviews",
     "version": "1.0.1",
-    "license": "MIT",
+    "license": "GPLv3",
     "authors": [
         {
             "name": "neerajsohal",
@@ -10,5 +10,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
 }

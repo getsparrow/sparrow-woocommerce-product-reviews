@@ -174,7 +174,7 @@ class Getsparrow_Public {
 				add_action( 'woocommerce_single_product_summary', 'getsparrow_io_star_rating_widget', 9 );
 			}
 		}
-  	}
+	}
   
   	public function display_reviews_widget() {
 		include_once 'partials/getsparrow-public-display.php';
