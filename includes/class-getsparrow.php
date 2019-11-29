@@ -179,6 +179,8 @@ class Getsparrow {
 		$plugin_public->setup_star_rating_widget();
 		$plugin_public->remove_native_reviews_widget();
 
+		$plugin_public->setup_rich_snippet();
+
 	}
 
 	/**

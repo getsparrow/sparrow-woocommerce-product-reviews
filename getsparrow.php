@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'COM_GETSPARROW_VERSION', '1.0.6' );
+define( 'COM_GETSPARROW_VERSION', '1.2.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -77,6 +77,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-getsparrow.php';
  * @since    1.0.0
  */
 function run_getsparrow() {
+
+	/* load vendors */
+
+	require_once "vendor/autoload.php";
 
 	$plugin = new Getsparrow();
 	$plugin->run();

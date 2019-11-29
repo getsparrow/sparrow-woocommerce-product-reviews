@@ -124,6 +124,53 @@ class Getsparrow_Public {
 
 		}
 	}
+
+	public function setup_rich_snippet() {
+		add_action('wp_head', array($this, 'add_rich_snippet'));
+		
+	}
+	
+	public function add_rich_snippet() {
+		
+		if ( class_exists( 'woocommerce' ) && is_product()) {
+
+			global $product;
+
+			try {
+				
+				$client = new \GuzzleHttp\Client();
+				$res = $client->request('GET', 'https://app.getsparrow.io/api/v1/reviews/?page=1&dataProductIdentifier='.$product->get_id().'&dataUrl='.get_permalink($product->get_id()), [
+					'headers' => [
+						'Authorization' => 'Bearer ' . get_option('getsparrow_io_access_token')
+					]
+				]);
+
+				$data = json_decode($res->getBody()->getContents());
+			} catch(\Exception $e) {
+				return;
+			}
+			
+			$schema = [
+				"@context" => "http://schema.org",
+				"@id" => get_permalink($product->get_id()) . "#product",
+				"@type" => "Product",
+				"name" => $product->get_name(),
+				"image" => wp_get_attachment_url( $product->get_image_id() ),
+				"aggregateRating" => [
+					"@type" => "AggregateRating",
+					"ratingValue" => $data->meta->average_rating,
+					"reviewCount" => $data->meta->total
+				  ]
+			];
+
+// 			if($data->meta->total > 0) {
+				echo '<script type="application/ld+json">';
+				echo json_encode($schema);
+				echo '</script>';
+// 			}
+		}
+		
+	}
   
   	public function setup_review_widget() {
 
