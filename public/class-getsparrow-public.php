@@ -126,32 +126,38 @@ class Getsparrow_Public {
 	}
   
   	public function setup_review_widget() {
+
+		$displayReviewWidget = get_option( $this->option_name . '_display_review_widget' );
+
+		if($displayReviewWidget == true) {
 			
-		$reviews_tab_position = get_option( $this->option_name . '_reviews_tab_position' );
+				
+			$reviews_tab_position = get_option( $this->option_name . '_reviews_tab_position' );
 
-		if($reviews_tab_position == 'before_related_products') {
-			add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 15 );
+			if($reviews_tab_position == 'before_related_products') {
+				add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 15 );
 
-			// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
-			function getsparrow_io_reviews_widget() {
-				call_user_func(array(__CLASS__, 'display_reviews_widget'));
-			}
-		} elseif($reviews_tab_position == 'after_related_products') {
-			add_action( 'woocommerce_after_single_product', 'getsparrow_io_reviews_widget', 5 );
+				// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
+				function getsparrow_io_reviews_widget() {
+					call_user_func(array(__CLASS__, 'display_reviews_widget'));
+				}
+			} elseif($reviews_tab_position == 'after_related_products') {
+				add_action( 'woocommerce_after_single_product', 'getsparrow_io_reviews_widget', 5 );
 
-			// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
-			function getsparrow_io_reviews_widget() {
-				call_user_func(array(__CLASS__, 'display_reviews_widget'));
-			}
-		} else {
-			add_filter( 'woocommerce_product_tabs', 'getsparrow_io_reviews_widget' );
-			function getsparrow_io_reviews_widget( $tabs ) {
-				$tabs['desc_tab'] = array(
-					'title'     => __( 'Reviews', 'woocommerce' ),
-					'priority'  => 50,
-					'callback'  => array( __CLASS__, 'display_reviews_widget' ),
-				);
-				return $tabs;
+				// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
+				function getsparrow_io_reviews_widget() {
+					call_user_func(array(__CLASS__, 'display_reviews_widget'));
+				}
+			} else {
+				add_filter( 'woocommerce_product_tabs', 'getsparrow_io_reviews_widget' );
+				function getsparrow_io_reviews_widget( $tabs ) {
+					$tabs['desc_tab'] = array(
+						'title'     => __( 'Reviews', 'woocommerce' ),
+						'priority'  => 50,
+						'callback'  => array( __CLASS__, 'display_reviews_widget' ),
+					);
+					return $tabs;
+				}
 			}
 		}
       

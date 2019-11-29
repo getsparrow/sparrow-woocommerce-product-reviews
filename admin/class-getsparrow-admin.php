@@ -163,7 +163,17 @@ class Getsparrow_Admin {
 		$this->option_name . '_general',
 		array( 'label_for' => $this->option_name . '_display_star_rating' )
 	);
-    register_setting( $this->plugin_name, $this->option_name . '_display_star_rating', 'boolean' );
+	register_setting( $this->plugin_name, $this->option_name . '_display_star_rating', 'boolean' );
+	
+	add_settings_field(
+		$this->option_name . '_display_review_widget',
+		__( 'Display Reviews Widget?<br/><br/><span><small><em>Enable star rating display below the product card on category and loops?</em></small></span>', 'getsparrow_io' ),
+		array( $this, $this->option_name . '_display_review_widget_cb' ),
+		$this->plugin_name,
+		$this->option_name . '_general',
+		array( 'label_for' => $this->option_name . '_display_review_widget' )
+	);
+    register_setting( $this->plugin_name, $this->option_name . '_display_review_widget', 'boolean' );
 	
 	add_settings_field(
 		$this->option_name . '_reviews_tab_position',
@@ -213,6 +223,18 @@ class Getsparrow_Admin {
 		$displayStarRating = get_option( $this->option_name . '_display_star_rating' );
 		// echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating' . '" id="' . $this->option_name . '_display_star_rating"' .  checked(true, $displayStarRating, false) . ' value="true" />';
 		echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating' . '" id="' . $this->option_name . '_display_star_rating' . '" value="1" '. checked(1, $displayStarRating, false) .' />';
+	}
+	
+	/**
+	 * Displays checkbox for display reviews widget
+	 *
+	 * @since  1.0.5
+	 *
+	 */
+	public function getsparrow_io_display_review_widget_cb() {
+		$displayReviewWidget = get_option( $this->option_name . '_display_review_widget' );
+		// echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating' . '" id="' . $this->option_name . '_display_star_rating"' .  checked(true, $displayStarRating, false) . ' value="true" />';
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_review_widget' . '" id="' . $this->option_name . '_display_review_widget' . '" value="1" '. checked(1, $displayReviewWidget, false) .' />';
 	}
 
 	/**

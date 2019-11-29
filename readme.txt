@@ -1,9 +1,9 @@
 === Sparrow ===
-Contributors: neerajsohal, getsparrow
+Contributors: getsparrow
 Donate link: 
 Tags: woocommerce, product reviews, woocommerce reviews, star rating
 Requires at least: 4.0
-Tested up to: 5.1
+Tested up to: 5.3
 Stable tag: trunk
 Requires PHP: 5.6.x
 License: GPLv3 or later
