@@ -136,6 +136,8 @@ class Getsparrow_Public {
 
 			global $product;
 
+			$product = wc_get_product();
+
 			try {
 				
 				$client = new \GuzzleHttp\Client();
@@ -146,6 +148,7 @@ class Getsparrow_Public {
 				]);
 
 				$data = json_decode($res->getBody()->getContents());
+				print_r($data);
 			} catch(\Exception $e) {
 				return;
 			}
@@ -163,11 +166,11 @@ class Getsparrow_Public {
 				  ]
 			];
 
-// 			if($data->meta->total > 0) {
+			if($data->meta->total > 0) {
 				echo '<script type="application/ld+json">';
 				echo json_encode($schema);
 				echo '</script>';
-// 			}
+			}
 		}
 		
 	}
