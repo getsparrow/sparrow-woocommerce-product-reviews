@@ -148,7 +148,6 @@ class Getsparrow_Public {
 				]);
 
 				$data = json_decode($res->getBody()->getContents());
-				print_r($data);
 			} catch(\Exception $e) {
 				return;
 			}
