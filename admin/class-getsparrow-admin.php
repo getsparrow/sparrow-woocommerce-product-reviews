@@ -125,6 +125,28 @@ class Getsparrow_Admin {
 		);
 	
 	}
+
+	public function check_installation() {
+
+		if(get_option('getsparrow_io_access_token') == null) {
+			echo '<div class="notice notice-warning is-dismissible">
+				<p>Thank you for installing Sparrow. Click <a href="options-general.php?page=getsparrow">here</a> to complete your installation by to add your API key.</p>
+				</div>';
+		}
+	}
+
+	/**
+	 * Add settings link to plugin page
+	 *
+	 * @param $links
+	 * @return mixed
+	 */
+	public function add_settings_link($links)
+	{
+		$settings_link = '<a href="options-general.php?page='.$this->plugin_name.'">' . __('Settings') . '</a>';
+		array_push($links, $settings_link);
+		return $links;
+	}
   
   /**
 	 * Render the options page for plugin
