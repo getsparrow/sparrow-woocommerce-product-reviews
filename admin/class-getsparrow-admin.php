@@ -129,10 +129,47 @@ class Getsparrow_Admin {
 	public function check_installation() {
 
 		if(get_option('getsparrow_io_access_token') == null) {
-			echo '<div class="notice notice-warning is-dismissible">
-				<p>Thank you for installing Sparrow. Click <a href="options-general.php?page=getsparrow">here</a> to complete your installation by to add your API key.</p>
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Welcome to Sparrow</strong> - you are almost ready to start generating product reviews.</br>
+						<a style="margin-top: .75rem" href="options-general.php?page=getsparrow" class="button-primary">Complete Setup</a>
+					</p>
 				</div>';
 		}
+
+		if ( !file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' ) && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) { 
+
+			$action = 'install-plugin';
+			$slug = 'woocommerce';
+			$url = wp_nonce_url(
+				add_query_arg(
+					array(
+						'action' => $action,
+						'plugin' => $slug
+					),
+					admin_url( 'update.php' )
+				),
+				$action.'_'.$slug
+			);
+
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Woocommerce is not installed</strong> - install and activate Woocommerce to get the best out of Sparrow.</br>
+						<a style="margin-top: .75rem" href="'.$url.'" class="button-primary">Install and activate</a>
+					</p>
+				</div>';
+		} elseif(! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			$path = 'woocommerce/woocommerce.php';
+			$link = wp_nonce_url(admin_url('plugins.php?action=activate&plugin='.$path), 'activate-plugin_'.$path);
+
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Woocommerce is not active</strong> - install and activate Woocommerce to get the best out of Sparrow.</br>
+						<a style="margin-top: .75rem" href="'.$link.'" class="button-primary">Activate</a>
+					</p>
+				</div>';
+		}
+		
 	}
 
 	/**
