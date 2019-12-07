@@ -152,6 +152,10 @@ class Getsparrow_Public {
 				return;
 			}
 			
+			if(is_null($data)) {
+				return;
+			}
+			
 			$schema = [
 				"@context" => "http://schema.org",
 				"@id" => get_permalink($product->get_id()) . "#product",
@@ -162,14 +166,14 @@ class Getsparrow_Public {
 					"@type" => "AggregateRating",
 					"ratingValue" => $data->meta->average_rating,
 					"reviewCount" => $data->meta->total
-				  ]
-			];
-
-			if($data->meta->total > 0) {
-				echo '<script type="application/ld+json">';
-				echo json_encode($schema);
-				echo '</script>';
-			}
+					]
+				];
+				
+				if($data->meta->total > 0) {
+					echo '<script type="application/ld+json">';
+					echo json_encode($schema);
+					echo '</script>';
+				}
 		}
 		
 	}
