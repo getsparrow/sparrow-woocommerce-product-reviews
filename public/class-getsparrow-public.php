@@ -235,11 +235,11 @@ class Getsparrow_Public {
 		}
 	}
   
-  	public function display_reviews_widget() {
+  	public static function display_reviews_widget() {
 		include_once 'partials/getsparrow-public-display.php';
 	}
 
-	public function display_star_rating_widget() {
+	public static function display_star_rating_widget() {
 		include_once 'partials/getsparrow-public-display.php';
 	}
 
