@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'COM_GETSPARROW_VERSION', '1.4.2' );
+define( 'COM_GETSPARROW_VERSION', '1.4.3' );
 
 /**
  * The code that runs during plugin activation.

@@ -156,6 +156,23 @@ class Getsparrow_Public {
 				return;
 			}
 			
+			$embeddedReviewSchema = [];
+
+			foreach($data->data as $review) {
+				array_push($embeddedReviewSchema, [
+					"@type" => "Review",
+					"reviewRating" => [
+						"@type" => "Rating",
+						"ratingValue" => $review->rating,
+					],
+					"author" => [
+						"@type" => "Person",
+						"name" => $review->customer->first_name
+					],
+					"reviewBody" => $review->text
+				]);
+			}
+
 			$schema = [
 				"@context" => "http://schema.org",
 				"@id" => get_permalink($product->get_id()) . "#product",
@@ -166,14 +183,15 @@ class Getsparrow_Public {
 					"@type" => "AggregateRating",
 					"ratingValue" => $data->meta->average_rating,
 					"reviewCount" => $data->meta->total
-					]
-				];
+				],
+				"review" => $embeddedReviewSchema
+			];
 				
-				if($data->meta->total > 0) {
-					echo '<script type="application/ld+json">';
-					echo json_encode($schema);
-					echo '</script>';
-				}
+			if($data->meta->total > 0) {
+				echo '<script type="application/ld+json">';
+				echo json_encode($schema);
+				echo '</script>';
+			}
 		}
 		
 	}
