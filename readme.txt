@@ -69,7 +69,9 @@ Sparrow supports WooCommerce version 3.2.x and up.
 2. 
 
 == Changelog ==
-
+= 1.4.4 =
+* initialised changelog
+* fixed bug with reviews widget not getting displayed in a tab
 
 == Upgrade Notice ==
 
