@@ -220,15 +220,21 @@ class Getsparrow_Public {
 					call_user_func(array(__CLASS__, 'display_reviews_widget'));
 				}
 			} else {
-				add_filter( 'woocommerce_product_tabs', 'getsparrow_io_reviews_widget' );
-				function getsparrow_io_reviews_widget( $tabs ) {
-					$tabs['desc_tab'] = array(
+
+				add_filter( 'woocommerce_product_tabs', 'getsparrow_io_reviews_widget_in_tab', 98 );
+
+				function getsparrow_io_reviews_widget_in_tab( $tabs ) {
+
+					$tabs['getsparrow_widget'] = array(
 						'title'     => __( 'Reviews', 'woocommerce' ),
 						'priority'  => 50,
-						'callback'  => array( __CLASS__, 'display_reviews_widget' ),
+						'callback'  => array( __CLASS__ , 'display_reviews_widget' ),
 					);
+
 					return $tabs;
+
 				}
+				
 			}
 		}
       
