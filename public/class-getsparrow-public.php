@@ -107,7 +107,7 @@ class Getsparrow_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/getsparrow-public.js', array( 'jquery' ), $this->version, false );
       
-      	wp_enqueue_script( 'getsparrow_io_widgets', '//getsparrow.github.io/widgets/latest.min.js' );
+      	wp_enqueue_script( 'getsparrow_io_widgets', '//cdn.jsdelivr.net/gh/getsparrow/getsparrow.github.io@v1.0.0-beta.11/widgets/latest.min.js' );
 
 	}
 
@@ -239,10 +239,24 @@ class Getsparrow_Public {
 		}
       
   	}
-	  
-	public function setup_star_rating_widget() {
+	
+	public function setup_star_rating_under_product_title() {
 
-		$displayStarRating = get_option( $this->option_name . '_display_star_rating' );
+		$displayStarRating = get_option( $this->option_name . '_display_star_rating_below_product_title' );
+
+		if($displayStarRating == true) {
+			
+			remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
+			add_action( 'woocommerce_single_product_summary', 'getsparrow_io_replace_star_rating', 9 );
+			function getsparrow_io_replace_star_rating() {
+				include 'partials/getsparrow-public-display-star-rating.php';
+			}
+		}
+	}
+	
+	public function setup_star_rating_in_product_card() {
+
+		$displayStarRating = get_option( $this->option_name . '_display_star_rating_in_product_cards' );
 
 		if($displayStarRating == true) {
 			
@@ -250,14 +264,35 @@ class Getsparrow_Public {
 			function getsparrow_io_star_rating_widget() {
 				include 'partials/getsparrow-public-display-star-rating.php';
 			}
-			
-			add_action( 'woocommerce_single_product_summary', 'getsparrow_io_replace_star_rating', 4 );
-			function getsparrow_io_replace_star_rating() {
-				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
-				add_action( 'woocommerce_single_product_summary', 'getsparrow_io_star_rating_widget', 9 );
-			}
+
 		}
 	}
+
+
+	public function handle_sparrow_widgets_shortcode($attributes, $content = null) {
+		
+		global $product;
+		ob_start(); 
+		?>
+
+		<sparrow-reviews
+			data-access-token="<?php echo get_option('getsparrow_io_access_token'); ?>"
+			data-product-identifier="<?php echo $product->get_id(); ?>"
+			data-platform="woocommerce"
+			data-price="<?php echo (strlen($product->get_regular_price())? $product->get_regular_price() : 0); ?>"
+			data-sale-price="<?php echo (strlen($product->get_sale_price())? $product->get_sale_price() : $product->get_price()); ?>"
+			data-currency="<?php echo get_woocommerce_currency(); ?>"
+			data-name="<?php echo $product->get_name(); ?>"
+			data-url="<?php echo get_permalink($product->get_id()); ?>"
+			data-image-url="<?php echo wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'full' )[0]; ?>"
+			data-description="<?php echo (strlen($product->get_short_description())) ? $product->get_short_description() : ((strlen($product->get_description())) ? $product->get_description() : ''); ?>"
+		></sparrow-reviews>
+
+		<?php 
+		return ob_get_clean();
+	}
+
+	
   
   	public static function display_reviews_widget() {
 		include_once 'partials/getsparrow-public-display.php';

@@ -189,10 +189,13 @@ class Getsparrow {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
       
       	$plugin_public->setup_review_widget();
-		$plugin_public->setup_star_rating_widget();
+		$plugin_public->setup_star_rating_under_product_title();
+		$plugin_public->setup_star_rating_in_product_card();
 		$plugin_public->remove_native_reviews_widget();
 
 		$plugin_public->setup_rich_snippet();
+
+		$this->loader->add_shortcode( 'sparrow-reviews-widget', $plugin_public, 'handle_sparrow_widgets_shortcode' );
 
 	}
 
