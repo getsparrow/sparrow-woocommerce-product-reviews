@@ -77,6 +77,7 @@ class Getsparrow {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_admin_filters();
 		$this->define_public_hooks();
 	}
 
@@ -158,6 +159,18 @@ class Getsparrow {
       
       	$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
       	$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+      	$this->loader->add_action( 'admin_notices', $plugin_admin, 'check_installation' );
+
+	}
+	
+	private function define_admin_filters() {
+
+		$plugin_admin = new Getsparrow_Admin( $this->get_plugin_name(), $this->get_version() );
+
+
+		// $this->loader->add_filter("plugin_action_links", $plugin_admin, 'add_settings_link' );
+		$this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . $this->plugin_name . '.php'), $plugin_admin, 'add_settings_link');
+
 
 	}
 
@@ -176,8 +189,13 @@ class Getsparrow {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
       
       	$plugin_public->setup_review_widget();
-		$plugin_public->setup_star_rating_widget();
+		$plugin_public->setup_star_rating_under_product_title();
+		$plugin_public->setup_star_rating_in_product_card();
 		$plugin_public->remove_native_reviews_widget();
+
+		$plugin_public->setup_rich_snippet();
+
+		$this->loader->add_shortcode( 'sparrow-reviews-widget', $plugin_public, 'handle_sparrow_widgets_shortcode' );
 
 	}
 

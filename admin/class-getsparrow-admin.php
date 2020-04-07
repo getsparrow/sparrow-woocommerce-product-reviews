@@ -125,6 +125,65 @@ class Getsparrow_Admin {
 		);
 	
 	}
+
+	public function check_installation() {
+
+		if(get_option('getsparrow_io_access_token') == null) {
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Welcome to Sparrow</strong> - you are almost ready to start generating product reviews.</br>
+						<a style="margin-top: .75rem" href="options-general.php?page=getsparrow" class="button-primary">Complete Setup</a>
+					</p>
+				</div>';
+		}
+
+		if ( !file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' ) && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) { 
+
+			$action = 'install-plugin';
+			$slug = 'woocommerce';
+			$url = wp_nonce_url(
+				add_query_arg(
+					array(
+						'action' => $action,
+						'plugin' => $slug
+					),
+					admin_url( 'update.php' )
+				),
+				$action.'_'.$slug
+			);
+
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Woocommerce is not installed</strong> - install and activate Woocommerce to get the best out of Sparrow.</br>
+						<a style="margin-top: .75rem" href="'.$url.'" class="button-primary">Install and activate</a>
+					</p>
+				</div>';
+		} elseif(! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			$path = 'woocommerce/woocommerce.php';
+			$link = wp_nonce_url(admin_url('plugins.php?action=activate&plugin='.$path), 'activate-plugin_'.$path);
+
+			echo '<div class="notice notice-error is-dismissible">
+					<p>
+						<strong>Woocommerce is not active</strong> - install and activate Woocommerce to get the best out of Sparrow.</br>
+						<a style="margin-top: .75rem" href="'.$link.'" class="button-primary">Activate</a>
+					</p>
+				</div>';
+		}
+		
+	}
+
+	/**
+	 * Add settings link to plugin page
+	 *
+	 * @param $links
+	 * @return mixed
+	 */
+	public function add_settings_link($links)
+	{
+		$settings_link = '<a href="options-general.php?page='.$this->plugin_name.'">' . __('Settings') . '</a>';
+		array_push($links, $settings_link);
+		return $links;
+	}
   
   /**
 	 * Render the options page for plugin
@@ -147,7 +206,7 @@ class Getsparrow_Admin {
 
     add_settings_field(
 		$this->option_name . '_access_token',
-		__( '<br/>Access Token</br><br/><small><em>Please enter Sparrow Access Token.</em></small><br/><br/><small>Don\'t have an Access Token? You can geenrate one from your accounts dashboard <a target="_blank" href="https://app.getsparrow.com/account/tokens">here</a>.</small></br></br><small>Don\'t have a Sparrow account? Sign up for one <a target="_blank" href="https://getsparrow.com">here</a></small>', 'getsparrow_io' ),
+		__( '<br/>Access Token</br><br/><small><em>Please enter Sparrow Access Token.</em></small><br/><br/><small>Don\'t have an Access Token? You can geenrate one from your accounts dashboard <a target="_blank" href="https://app.getsparrow.io/account/tokens">here</a>.</small></br></br><small>Don\'t have a Sparrow account? Sign up for one <a target="_blank" href="https://getsparrow.io">here</a></small>', 'getsparrow_io' ),
 		array( $this, $this->option_name . '_access_token_cb' ),
 		$this->plugin_name,
 		$this->option_name . '_general',
@@ -156,14 +215,34 @@ class Getsparrow_Admin {
 	register_setting( $this->plugin_name, $this->option_name . '_access_token', 'string' );
 
 	add_settings_field(
-		$this->option_name . '_display_star_rating',
-		__( 'Display Star Rating?<br/><br/><span><small><em>Enable star rating display below the product card on category and loops?</em></small></span>', 'getsparrow_io' ),
-		array( $this, $this->option_name . '_display_star_rating_cb' ),
+		$this->option_name . '_display_star_rating_below_product_title',
+		__( 'Display Star Rating Below Product Title?<br/><br/><span><small><em>Enable star rating display below the product title?</em></small></span>', 'getsparrow_io' ),
+		array( $this, $this->option_name . '_display_star_rating_below_product_title_cb' ),
 		$this->plugin_name,
 		$this->option_name . '_general',
-		array( 'label_for' => $this->option_name . '_display_star_rating' )
+		array( 'label_for' => $this->option_name . '_display_star_rating_below_product_title' )
 	);
-    register_setting( $this->plugin_name, $this->option_name . '_display_star_rating', 'boolean' );
+	register_setting( $this->plugin_name, $this->option_name . '_display_star_rating_below_product_title', 'boolean' );
+	
+	add_settings_field(
+		$this->option_name . '_display_star_rating_in_product_cards',
+		__( 'Display Star Rating In Product Cards?<br/><br/><span><small><em>Enable star rating display in product cards?</em></small></span>', 'getsparrow_io' ),
+		array( $this, $this->option_name . '_display_star_rating_in_product_cards_cb' ),
+		$this->plugin_name,
+		$this->option_name . '_general',
+		array( 'label_for' => $this->option_name . '_display_star_rating_in_product_cards' )
+	);
+	register_setting( $this->plugin_name, $this->option_name . '_display_star_rating_in_product_cards', 'boolean' );
+	
+	add_settings_field(
+		$this->option_name . '_display_review_widget',
+		__( 'Display Reviews Widget?<br/><br/><span><small><em>Enable star rating display below the product card on category and loops?</em></small></span><br/><br/><span><small><em>You can also use shortcode <strong>[sparrow-reviews-widget]</strong> to display the reviews widget anywhere on the product page</em></small></span>', 'getsparrow_io' ),
+		array( $this, $this->option_name . '_display_review_widget_cb' ),
+		$this->plugin_name,
+		$this->option_name . '_general',
+		array( 'label_for' => $this->option_name . '_display_review_widget' )
+	);
+    register_setting( $this->plugin_name, $this->option_name . '_display_review_widget', 'boolean' );
 	
 	add_settings_field(
 		$this->option_name . '_reviews_tab_position',
@@ -199,9 +278,6 @@ class Getsparrow_Admin {
 			<option value='before_related_products' " . selected('before_related_products', $reviews_tab_position, false) . ">Before Related Products</option>
 			<option value='after_related_products' " . selected('after_related_products', $reviews_tab_position, false) . ">After Related Products</option>
 		</select>";
-		// $access_token = get_option( $this->option_name . '_reviews_tab_position' );
-
-		// echo '<input type="text" name="' . $this->option_name . '_access_token' . '" id="' . $this->option_name . '_access_token' . '" value="' . $access_token . '"> ';
 	}
 
 	public function getsparrow_io_access_token_cb() {
@@ -209,10 +285,25 @@ class Getsparrow_Admin {
 		echo '<textarea cols="100" rows="10" type="text" name="' . $this->option_name . '_access_token' . '" id="' . $this->option_name . '_access_token' . '">' . $access_token . '</textarea>';
 	}
 
-	public function getsparrow_io_display_star_rating_cb() {
-		$displayStarRating = get_option( $this->option_name . '_display_star_rating' );
-		// echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating' . '" id="' . $this->option_name . '_display_star_rating"' .  checked(true, $displayStarRating, false) . ' value="true" />';
-		echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating' . '" id="' . $this->option_name . '_display_star_rating' . '" value="1" '. checked(1, $displayStarRating, false) .' />';
+	public function getsparrow_io_display_star_rating_below_product_title_cb() {
+		$displayStarRatingBelowProductTitle = get_option( $this->option_name . '_display_star_rating_below_product_title' );
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating_below_product_title' . '" id="' . $this->option_name . '_display_star_rating_below_product_title' . '" value="1" '. checked(1, $displayStarRatingBelowProductTitle, false) .' />';
+	}
+	
+	public function getsparrow_io_display_star_rating_in_product_cards_cb() {
+		$displayStarRatingInProductCards = get_option( $this->option_name . '_display_star_rating_in_product_cards' );
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_star_rating_in_product_cards' . '" id="' . $this->option_name . '_display_star_rating_in_product_cards' . '" value="1" '. checked(1, $displayStarRatingInProductCards, false) .' />';
+	}
+	
+	/**
+	 * Displays checkbox for display reviews widget
+	 *
+	 * @since  1.0.5
+	 *
+	 */
+	public function getsparrow_io_display_review_widget_cb() {
+		$displayReviewWidget = get_option( $this->option_name . '_display_review_widget' );
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_review_widget' . '" id="' . $this->option_name . '_display_review_widget' . '" value="1" '. checked(1, $displayReviewWidget, false) .' />';
 	}
 
 	/**
