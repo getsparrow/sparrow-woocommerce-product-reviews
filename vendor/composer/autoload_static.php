@@ -18,11 +18,19 @@ class ComposerStaticInit9a28348bef75571d78371fefd015461a
         array (
             'Psr\\Http\\Message\\' => 17,
         ),
+        'K' => 
+        array (
+            'Kevinrob\\GuzzleCache\\' => 21,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+        ),
+        'D' => 
+        array (
+            'Doctrine\\Common\\Cache\\' => 22,
         ),
     );
 
@@ -30,6 +38,10 @@ class ComposerStaticInit9a28348bef75571d78371fefd015461a
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Kevinrob\\GuzzleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kevinrob/guzzle-cache-middleware/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -42,6 +54,10 @@ class ComposerStaticInit9a28348bef75571d78371fefd015461a
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Doctrine\\Common\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
         ),
     );
 
