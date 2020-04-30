@@ -16,7 +16,7 @@
  * Plugin Name:       Sparrow
  * Plugin URI:        https://getsparrow.io/integrations/woocommerce
  * Description:       Boost your store sales by UGC and social proof powered product reviews.
- * Version:           1.5.0
+ * Version:           2.0.0
  * Author:            Sparrow
  * Author URI:        https://getsparrow.io
  * License:           GPL-2.0+
