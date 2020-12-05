@@ -115,17 +115,18 @@ class Getsparrow_Public
 
 	public function remove_native_reviews_widget()
 	{
-		add_filter('woocommerce_product_tabs', 'getsparrow_io_remove_product_tabs', 98);
 
-		function getsparrow_io_remove_product_tabs($tabs)
-		{
+		if ( 'yes' === get_option( 'woocommerce_enable_reviews', 'yes' ) ) {
+			update_option('woocommerce_enable_reviews', 'no');
+		}
 
-			// unset( $tabs['description'] );      	// Remove the description tab
+		
+		function getsparrow_io_remove_product_tabs($tabs) {
+			
 			unset($tabs['reviews']); 			// Remove the reviews tab
-			// unset( $tabs['additional_information'] );  	// Remove the additional information tab
-
 			return $tabs;
 		}
+		add_filter('woocommerce_product_tabs', 'getsparrow_io_remove_product_tabs', 98);
 	}
 
 	public function setup_rich_snippet()
@@ -227,36 +228,34 @@ class Getsparrow_Public
 			$reviews_tab_position = get_option($this->option_name . '_reviews_tab_position');
 
 			if ($reviews_tab_position == 'before_related_products') {
-				add_action('woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 15);
+				$that = $this;
+				
+				add_action('woocommerce_after_single_product_summary', function() use(&$that) {
+					$that->display_reviews_widget();
+				}, 15);
 
-				// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
-				function getsparrow_io_reviews_widget()
-				{
-					call_user_func(array(__CLASS__, 'display_reviews_widget'));
-				}
 			} elseif ($reviews_tab_position == 'after_related_products') {
-				add_action('woocommerce_after_single_product', 'getsparrow_io_reviews_widget', 5);
-
-				// add_action( 'woocommerce_after_single_product_summary', 'getsparrow_io_reviews_widget', 5 );
-				function getsparrow_io_reviews_widget()
-				{
-					call_user_func(array(__CLASS__, 'display_reviews_widget'));
-				}
+				$that = $this;
+				add_action('woocommerce_after_single_product', function() use(&$that) {
+					$that->display_reviews_widget();
+				}, 5);
+				
 			} else {
 
-				add_filter('woocommerce_product_tabs', 'getsparrow_io_reviews_widget_in_tab', 98);
-
-				function getsparrow_io_reviews_widget_in_tab($tabs)
-				{
-
+				$that = $this;
+				
+				add_filter('woocommerce_product_tabs', function($tabs) use(&$that) {
+					
 					$tabs['getsparrow_widget'] = array(
 						'title'     => __('Reviews', 'woocommerce'),
 						'priority'  => 50,
-						'callback'  => array(__CLASS__, 'display_reviews_widget'),
+						'callback'  => function() use(&$that) {
+							$that->display_reviews_widget();
+						}
 					);
 
 					return $tabs;
-				}
+				}, 98);
 			}
 		}
 	}
