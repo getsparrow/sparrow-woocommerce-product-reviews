@@ -3,7 +3,7 @@ Contributors: getsparrow
 Donate link: 
 Tags: woocommerce, product reviews, woocommerce reviews, star ratings, customer reviews, review plugin, review reminder
 Requires at least: 4.0
-Tested up to: 5.4
+Tested up to: 5.5.3
 Stable tag: trunk
 Requires PHP: 5.6.x
 License: GPLv3 or later
@@ -75,6 +75,11 @@ Sparrow supports WooCommerce version 3.2.x and up.
 2. 
 
 == Changelog ==
+= 2.0.1 =
+* maintenance update
+* added support for php7.4
+* bug fixes
+
 = 2.0.0 =
 * major impprovement in speed and performance
 * bug fixes
