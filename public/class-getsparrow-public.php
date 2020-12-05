@@ -115,17 +115,18 @@ class Getsparrow_Public
 
 	public function remove_native_reviews_widget()
 	{
-		add_filter('woocommerce_product_tabs', 'getsparrow_io_remove_product_tabs', 98);
 
-		function getsparrow_io_remove_product_tabs($tabs)
-		{
+		if ( 'yes' === get_option( 'woocommerce_enable_reviews', 'yes' ) ) {
+			update_option('woocommerce_enable_reviews', 'no');
+		}
 
-			// unset( $tabs['description'] );      	// Remove the description tab
+		
+		function getsparrow_io_remove_product_tabs($tabs) {
+			
 			unset($tabs['reviews']); 			// Remove the reviews tab
-			// unset( $tabs['additional_information'] );  	// Remove the additional information tab
-
 			return $tabs;
 		}
+		add_filter('woocommerce_product_tabs', 'getsparrow_io_remove_product_tabs', 98);
 	}
 
 	public function setup_rich_snippet()
