@@ -63,8 +63,9 @@ if ( ! function_exists( 'spa_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'spa_fs_loaded' );
 }
- /* include autoload */
- require_once dirname(__FILE__) . "/vendor/autoload.php";
+
+/* include autoload */
+require_once dirname(__FILE__) . "/vendor/autoload.php";
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
