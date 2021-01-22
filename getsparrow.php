@@ -25,6 +25,44 @@
  * Domain Path:       /languages
  */
 
+
+if ( ! function_exists( 'spa_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function spa_fs() {
+        global $spa_fs;
+
+        if ( ! isset( $spa_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname(__FILE__) . '/freemius/start.php';
+
+            $spa_fs = fs_dynamic_init( array(
+                'id'                  => '4451',
+                'slug'                => 'sparrow',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_1f2b88e03c620013ae8ebd9186a2b',
+                'is_premium'          => false,
+                'has_addons'          => false,
+                'has_paid_plans'      => false,
+                'menu'                => array(
+                    'slug'           => 'getsparrow',
+                    'account'        => false,
+                    'contact'        => false,
+                    'support'        => false,
+                    'parent'         => array(
+                        'slug' => 'options-general.php',
+                    ),
+                ),
+            ) );
+        }
+
+        return $spa_fs;
+    }
+
+    // Init Freemius.
+    spa_fs();
+    // Signal that SDK was initiated.
+    do_action( 'spa_fs_loaded' );
+}
  /* include autoload */
  require_once dirname(__FILE__) . "/vendor/autoload.php";
 
